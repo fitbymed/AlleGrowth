@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlleGrowth — Allegro ADS, który realnie sprzedaje</title>
+  <meta name="description" content="Profesjonalne prowadzenie kampanii Allegro Ads. Trzy pakiety: od prowadzenia reklam po pełną optymalizację aukcji, tytułów i konwersji." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --orange: #ff5a00;
+      --orange-dark: #e54f00;
+      --ink: #0f1115;
+      --ink-soft: #2a2f3a;
+      --muted: #6b7280;
+      --bg: #ffffff;
+      --bg-soft: #f7f8fa;
+      --line: #e7e9ee;
+      --green: #16a34a;
+      --shadow: 0 10px 40px rgba(15, 17, 21, 0.08);
+      --radius: 18px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--orange); color: #fff; font-weight: 700;
+      padding: 14px 28px; border-radius: 999px; border: none; cursor: pointer;
+      font-size: 16px; transition: transform .15s ease, background .15s ease;
+    }
+    .btn:hover { background: var(--orange-dark); transform: translateY(-2px); }
+    .btn-ghost {
+      background: transparent; color: var(--ink); border: 1.5px solid var(--line);
+    }
+    .btn-ghost:hover { background: var(--bg-soft); border-color: var(--ink); }
+
+    /* HEADER */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 22px; letter-spacing: -.5px; }
+    .logo .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--orange); display: inline-block; }
+    .logo span { color: var(--orange); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { font-weight: 500; color: var(--ink-soft); font-size: 15px; }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-cta { display: flex; gap: 12px; align-items: center; }
+    .burger { display: none; background: none; border: none; cursor: pointer; font-size: 26px; }
+
+    /* HERO */
+    .hero { padding: 90px 0 70px; background: radial-gradient(120% 120% at 80% 0%, #fff4ec 0%, #ffffff 55%); }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px; align-items: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--line); color: var(--ink-soft);
+      padding: 7px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; margin-bottom: 24px;
+    }
+    .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+    h1 { font-size: 56px; line-height: 1.05; letter-spacing: -1.5px; font-weight: 900; }
+    h1 .hl { color: var(--orange); }
+    .hero p.lead { font-size: 20px; color: var(--muted); margin: 24px 0 32px; max-width: 540px; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-stats { display: flex; gap: 36px; margin-top: 44px; }
+    .stat strong { display: block; font-size: 32px; font-weight: 900; letter-spacing: -1px; }
+    .stat span { font-size: 14px; color: var(--muted); }
+
+    .hero-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 24px;
+      box-shadow: var(--shadow); padding: 28px;
+    }
+    .hero-card h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 18px; }
+    .chart { display: flex; align-items: flex-end; gap: 12px; height: 150px; }
+    .bar { flex: 1; background: linear-gradient(180deg, #ffd0b3, var(--orange)); border-radius: 8px 8px 0 0; position: relative; }
+    .bar span { position: absolute; top: -22px; left: 0; right: 0; text-align: center; font-size: 12px; font-weight: 700; color: var(--ink); }
+    .chart-labels { display: flex; gap: 12px; margin-top: 10px; }
+    .chart-labels div { flex: 1; text-align: center; font-size: 12px; color: var(--muted); }
+    .hero-card .row { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .hero-card .row b { color: var(--green); }
+
+    /* SECTION GENERIC */
+    section.block { padding: 80px 0; }
+    .section-head { text-align: center; max-width: 680px; margin: 0 auto 52px; }
+    .eyebrow { color: var(--orange); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 13px; }
+    h2 { font-size: 40px; letter-spacing: -1px; font-weight: 900; margin: 10px 0 14px; }
+    .section-head p { color: var(--muted); font-size: 18px; }
+
+    /* PROBLEMS / FEATURES */
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .feature { background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+    .feature .ico { width: 48px; height: 48px; border-radius: 12px; background: #fff; border: 1px solid var(--line); display: grid; place-items: center; font-size: 24px; margin-bottom: 16px; }
+    .feature h3 { font-size: 19px; margin-bottom: 8px; }
+    .feature p { color: var(--muted); font-size: 15px; }
+
+    /* PRICING */
+    #cennik { background: var(--bg-soft); }
+    .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+    .plan {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 34px 30px; display: flex; flex-direction: column; position: relative;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .plan:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .plan.featured { border: 2px solid var(--orange); box-shadow: 0 20px 50px rgba(255,90,0,.15); }
+    .plan .tag { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--orange); color: #fff; font-size: 12px; font-weight: 800; padding: 6px 16px; border-radius: 999px; text-transform: uppercase; letter-spacing: .5px; }
+    .plan-name { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); }
+    .plan-desc { color: var(--muted); font-size: 14px; margin: 6px 0 18px; min-height: 40px; }
+    .price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
+    .price .amount { font-size: 48px; font-weight: 900; letter-spacing: -2px; }
+    .price .per { color: var(--muted); font-weight: 600; font-size: 15px; }
+    .price-note { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .plan ul { list-style: none; margin: 0 0 28px; flex: 1; }
+    .plan li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; font-size: 15px; border-bottom: 1px dashed var(--line); }
+    .plan li:last-child { border-bottom: none; }
+    .plan li .check { color: var(--green); font-weight: 900; flex-shrink: 0; }
+    .plan li.muted { color: #b4b9c2; }
+    .plan li.muted .check { color: #d6d9df; }
+    .plan .btn { width: 100%; justify-content: center; margin-top: auto; }
+    .plan.featured .btn { box-shadow: 0 8px 24px rgba(255,90,0,.3); }
+
+    /* COMPARISON NOTE */
+    .vat-note { text-align: center; color: var(--muted); font-size: 14px; margin-top: 28px; }
+
+    /* PROCESS */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .step { text-align: center; }
+    .step .num { width: 54px; height: 54px; border-radius: 50%; background: var(--orange); color: #fff; font-weight: 900; font-size: 22px; display: grid; place-items: center; margin: 0 auto 16px; }
+    .step h3 { font-size: 18px; margin-bottom: 6px; }
+    .step p { color: var(--muted); font-size: 14px; }
+
+    /* CTA + FORM */
+    #kontakt { background: linear-gradient(135deg, #14161c 0%, #1f232d 100%); color: #fff; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    #kontakt h2 { color: #fff; }
+    #kontakt .eyebrow { color: #ff8c4d; }
+    .contact-grid p.lead { color: #c8ccd6; font-size: 18px; margin-bottom: 28px; }
+    .contact-quick { display: flex; flex-direction: column; gap: 14px; }
+    .contact-quick a { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); padding: 16px 20px; border-radius: 14px; font-weight: 600; transition: background .15s; }
+    .contact-quick a:hover { background: rgba(255,255,255,.12); }
+    .contact-quick .ico { width: 42px; height: 42px; border-radius: 10px; background: var(--orange); display: grid; place-items: center; font-size: 20px; }
+    .contact-quick small { display: block; color: #9aa0ad; font-weight: 500; font-size: 13px; }
+
+    .form-card { background: #fff; color: var(--ink); border-radius: 20px; padding: 32px; box-shadow: var(--shadow); }
+    .form-card h3 { font-size: 22px; margin-bottom: 6px; }
+    .form-card .sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 12px;
+      font-family: inherit; font-size: 15px; background: #fff; transition: border .15s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--orange); }
+    .form-card .btn { width: 100%; justify-content: center; }
+    .form-note { font-size: 12px; color: var(--muted); margin-top: 14px; text-align: center; }
+    .success { display: none; background: #ecfdf3; border: 1px solid #abefc6; color: #067647; padding: 16px; border-radius: 12px; font-weight: 600; text-align: center; }
+
+    /* FAQ */
+    .faq-list { max-width: 760px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--line); }
+    .faq-q { width: 100%; text-align: left; background: none; border: none; padding: 22px 0; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; gap: 16px; color: var(--ink); }
+    .faq-q .plus { color: var(--orange); font-weight: 900; transition: transform .2s; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .25s ease; color: var(--muted); font-size: 16px; }
+    .faq-item.open .faq-a { max-height: 240px; padding-bottom: 22px; }
+    .faq-item.open .plus { transform: rotate(45deg); }
+
+    /* FOOTER */
+    footer { background: var(--ink); color: #aab; padding: 50px 0 30px; }
+    .foot-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; align-items: center; }
+    footer .logo { color: #fff; }
+    .foot-grid a { color: #aab; }
+    .foot-grid a:hover { color: #fff; }
+    .foot-bottom { border-top: 1px solid #2a2f3a; margin-top: 30px; padding-top: 22px; font-size: 13px; color: #777e8d; text-align: center; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .features, .pricing { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      h1 { font-size: 40px; }
+      h2 { font-size: 30px; }
+      .nav-links { display: none; position: absolute; top: 72px; left: 0; right: 0; background: #fff; flex-direction: column; padding: 20px 24px; border-bottom: 1px solid var(--line); gap: 18px; }
+      .nav-links.show { display: flex; }
+      .burger { display: block; }
+      .nav-cta .btn-ghost { display: none; }
+      .hero-stats { gap: 22px; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="wrap nav">
+      <a href="#" class="logo"><span class="dot"></span>Alle<span>Growth</span></a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#korzysci">Dlaczego my</a>
+        <a href="#cennik">Pakiety</a>
+        <a href="#proces">Jak działamy</a>
+        <a href="#faq">FAQ</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#cennik" class="btn btn-ghost">Pakiety</a>
+        <a href="#kontakt" class="btn">Bezpłatna konsultacja</a>
+        <button class="burger" id="burger" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="badge"><span class="dot"></span>Specjaliści Allegro Ads</div>
+        <h1>Allegro Ads, który <span class="hl">realnie sprzedaje</span> — bez przepalania budżetu.</h1>
+        <p class="lead">Prowadzimy i optymalizujemy Twoje kampanie reklamowe na Allegro. Od prowadzenia reklam, przez raporty, po konkretne wskazówki co poprawić w aukcjach, tytułach i konwersji.</p>
+        <div class="hero-cta">
+          <a href="#cennik" class="btn">Zobacz pakiety →</a>
+          <a href="#kontakt" class="btn btn-ghost">Umów konsultację</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><strong>3 pakiety</strong><span>dopasowane do etapu rozwoju</span></div>
+          <div class="stat"><strong>od 199 zł</strong><span>miesięcznie</span></div>
+          <div class="stat"><strong>0 zł</strong><span>za pierwszą konsultację</span></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h4>Wzrost sprzedaży z Allegro Ads</h4>
+        <div class="chart">
+          <div class="bar" style="height:45%"><span>+18%</span></div>
+          <div class="bar" style="height:62%"><span>+34%</span></div>
+          <div class="bar" style="height:80%"><span>+58%</span></div>
+          <div class="bar" style="height:100%"><span>+87%</span></div>
+        </div>
+        <div class="chart-labels">
+          <div>Mies. 1</div><div>Mies. 2</div><div>Mies. 3</div><div>Mies. 4</div>
+        </div>
+        <div class="row">
+          <span>Średni wzrost widoczności aukcji</span>
+          <b>↑ znacząco</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KORZYSCI -->
+  <section class="block" id="korzysci">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Dlaczego AlleGrowth</div>
+        <h2>Reklama to nie wszystko. Liczy się cała aukcja.</h2>
+        <p>Sama kampania Allegro Ads nie wystarczy, jeśli aukcja nie konwertuje. Patrzymy na cały obraz — od reklamy po treść oferty.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <div class="ico">🎯</div>
+          <h3>Kampanie pod sprzedaż</h3>
+          <p>Ustawiamy i prowadzimy Allegro Ads tak, by budżet trafiał tam, gdzie realnie generuje zamówienia — nie tylko kliknięcia.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">📊</div>
+          <h3>Przejrzyste raporty</h3>
+          <p>Co miesiąc dostajesz czytelny raport: co działało, gdzie poszedł budżet i jaki był efekt — bez ściemy i tabelek bez sensu.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">🔧</div>
+          <h3>Konkretne wskazówki</h3>
+          <p>Mówimy wprost co poprawić: tytuł, zdjęcia, opis, cena. Wskazujemy, co na danej aukcji obniża konwersję i jak to naprawić.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CENNIK -->
+  <section class="block" id="cennik">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Pakiety</div>
+        <h2>Wybierz pakiet dopasowany do siebie</h2>
+        <p>Trzy poziomy współpracy — od samego prowadzenia reklam po pełną optymalizację aukcji i konwersji.</p>
+      </div>
+      <div class="pricing">
+
+        <!-- START -->
+        <div class="plan">
+          <div class="plan-name">Start</div>
+          <div class="plan-desc">Dla tych, którzy chcą po prostu mieć dobrze prowadzone reklamy.</div>
+          <div class="price"><span class="amount">199</span><span class="per">zł / mies.</span></div>
+          <div class="price-note">netto, bez umowy lojalnościowej</div>
+          <ul>
+            <li><span class="check">✓</span> Prowadzenie kampanii Allegro Ads</li>
+            <li><span class="check">✓</span> Konfiguracja i uruchomienie reklam</li>
+            <li><span class="check">✓</span> Bieżąca optymalizacja stawek</li>
+            <li><span class="check">✓</span> Kontrola wydatków budżetu</li>
+            <li class="muted"><span class="check">✓</span> Miesięczne raporty</li>
+            <li class="muted"><span class="check">✓</span> Wskazówki co poprawić</li>
+            <li class="muted"><span class="check">✓</span> Sugestie tytułów i analiza konwersji</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost" onclick="presetPlan('Start — 199 zł/mies.')">Wybieram Start</a>
+        </div>
+
+        <!-- WZROST (featured) -->
+        <div class="plan featured">
+          <div class="tag">Najczęściej wybierany</div>
+          <div class="plan-name">Wzrost</div>
+          <div class="plan-desc">Reklamy + wiedza, co realnie poprawić w Twoich aukcjach.</div>
+          <div class="price"><span class="amount">399</span><span class="per">zł / mies.</span></div>
+          <div class="price-note">netto, bez umowy lojalnościowej</div>
+          <ul>
+            <li><span class="check">✓</span> Wszystko z pakietu <b>Start</b></li>
+            <li><span class="check">✓</span> Szczegółowe miesięczne raporty</li>
+            <li><span class="check">✓</span> Wskazówki co poprawić na aukcjach</li>
+            <li><span class="check">✓</span> Rekomendacje dot. tytułów ofert</li>
+            <li><span class="check">✓</span> Sugestie poprawy grafik / zdjęć</li>
+            <li><span class="check">✓</span> Priorytet w kontakcie</li>
+            <li class="muted"><span class="check">✓</span> Pełna analiza konwersji aukcji</li>
+          </ul>
+          <a href="#kontakt" class="btn" onclick="presetPlan('Wzrost — 399 zł/mies.')">Wybieram Wzrost</a>
+        </div>
+
+        <!-- DOMINACJA -->
+        <div class="plan">
+          <div class="plan-name">Dominacja</div>
+          <div class="plan-desc">Pełna optymalizacja — reklamy, aukcje i konwersja pod lupą.</div>
+          <div class="price"><span class="amount">599</span><span class="per">zł / mies.</span></div>
+          <div class="price-note">netto, bez umowy lojalnościowej</div>
+          <ul>
+            <li><span class="check">✓</span> Wszystko z pakietu <b>Wzrost</b></li>
+            <li><span class="check">✓</span> Gotowe propozycje tytułów aukcji</li>
+            <li><span class="check">✓</span> Sprawdzanie konwersji każdej aukcji</li>
+            <li><span class="check">✓</span> Wskazywanie co na aukcji jest nie tak</li>
+            <li><span class="check">✓</span> Audyt ofert: zdjęcia, opis, cena, parametry</li>
+            <li><span class="check">✓</span> Plan działań naprawczych krok po kroku</li>
+            <li><span class="check">✓</span> Najwyższy priorytet i stały kontakt</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost" onclick="presetPlan('Dominacja — 599 zł/mies.')">Wybieram Dominację</a>
+        </div>
+
+      </div>
+      <p class="vat-note">Wszystkie ceny są cenami netto. Pierwsza konsultacja i wstępny audyt konta — bezpłatnie.</p>
+    </div>
+  </section>
+
+  <!-- PROCES -->
+  <section class="block" id="proces">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Jak działamy</div>
+        <h2>Prosty proces, konkretne efekty</h2>
+        <p>Bez zbędnej biurokracji. Zaczynamy od rozmowy, kończymy na wynikach.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Bezpłatna konsultacja</h3>
+          <p>Poznajemy Twój sklep, asortyment i cele sprzedażowe.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Audyt konta</h3>
+          <p>Sprawdzamy aukcje i dotychczasowe reklamy. Wskazujemy potencjał.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Wdrożenie</h3>
+          <p>Uruchamiamy i optymalizujemy kampanie zgodnie z wybranym pakietem.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h3>Raporty i rozwój</h3>
+          <p>Co miesiąc raportujemy efekty i podpowiadamy kolejne kroki.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section class="block" id="kontakt">
+    <div class="wrap contact-grid">
+      <div>
+        <div class="eyebrow">Kontakt</div>
+        <h2>Zacznijmy od bezpłatnej konsultacji</h2>
+        <p class="lead">Zostaw kontakt lub napisz bezpośrednio. Odezwiemy się i wspólnie dobierzemy pakiet, który ma sens dla Twojego sklepu.</p>
+        <div class="contact-quick">
+          <a href="mailto:adam.kubiak@fitbymed.com?subject=Zapytanie%20Allegro%20Ads%20-%20AlleGrowth">
+            <span class="ico">✉</span>
+            <span>Napisz e-mail<small>adam.kubiak@fitbymed.com</small></span>
+          </a>
+          <a href="tel:+48000000000">
+            <span class="ico">☎</span>
+            <span>Zadzwoń<small>Uzupełnij swój numer telefonu</small></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Zostaw zgłoszenie</h3>
+        <p class="sub">Odpowiadamy zwykle tego samego dnia roboczego.</p>
+        <form id="leadForm" action="https://formsubmit.co/adam.kubiak@fitbymed.com" method="POST">
+          <input type="hidden" name="_subject" value="Nowe zgłoszenie z landing page AlleGrowth" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="text" name="_honey" style="display:none" />
+          <div class="field">
+            <label for="name">Imię i nazwisko *</label>
+            <input type="text" id="name" name="Imię" required placeholder="Jan Kowalski" />
+          </div>
+          <div class="field">
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" name="E-mail" required placeholder="jan@sklep.pl" />
+          </div>
+          <div class="field">
+            <label for="phone">Telefon</label>
+            <input type="tel" id="phone" name="Telefon" placeholder="+48 600 000 000" />
+          </div>
+          <div class="field">
+            <label for="plan">Interesujący pakiet</label>
+            <select id="plan" name="Pakiet">
+              <option>Nie wiem — doradźcie</option>
+              <option>Start — 199 zł/mies.</option>
+              <option>Wzrost — 399 zł/mies.</option>
+              <option>Dominacja — 599 zł/mies.</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="msg">Wiadomość</label>
+            <textarea id="msg" name="Wiadomość" rows="3" placeholder="Kilka słów o Twoim sklepie i asortymencie..."></textarea>
+          </div>
+          <button type="submit" class="btn">Wyślij zgłoszenie</button>
+          <p class="form-note">Wysyłając formularz wyrażasz zgodę na kontakt w sprawie usługi.</p>
+        </form>
+        <div class="success" id="formSuccess">✓ Dziękujemy! Zgłoszenie wysłane — odezwiemy się wkrótce.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">FAQ</div>
+        <h2>Najczęstsze pytania</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q">Czy budżet reklamowy Allegro Ads jest wliczony w cenę pakietu? <span class="plus">+</span></button>
+          <div class="faq-a">Nie. Cena pakietu dotyczy obsługi i optymalizacji kampanii. Budżet reklamowy płacisz bezpośrednio Allegro i sam decydujesz o jego wysokości — my pomagamy go efektywnie wykorzystać.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Czy podpisuję długą umowę? <span class="plus">+</span></button>
+          <div class="faq-a">Nie ma umów lojalnościowych. Rozliczenie jest miesięczne — współpracujemy tak długo, jak długo widzisz w tym wartość.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Czym różni się pakiet Wzrost od Dominacji? <span class="plus">+</span></button>
+          <div class="faq-a">Wzrost daje Ci raporty i wskazówki co poprawić (tytuły, grafiki). Dominacja idzie dalej: dostajesz gotowe propozycje tytułów, sprawdzamy konwersję każdej aukcji i punkt po punkcie wskazujemy, co konkretnie obniża sprzedaż na danej ofercie.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Ile trwa, zanim zobaczę efekty? <span class="plus">+</span></button>
+          <div class="faq-a">Pierwsze zmiany w widoczności widać zwykle w ciągu kilku tygodni. Stabilne efekty sprzedażowe budują się przez 2–3 miesiące optymalizacji.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Czy pomożecie, jeśli dopiero zaczynam na Allegro? <span class="plus">+</span></button>
+          <div class="faq-a">Tak. Podczas bezpłatnej konsultacji ocenimy Twoją sytuację i doradzimy, od czego zacząć — niezależnie od tego, czy masz 5 czy 500 aukcji.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <a href="#" class="logo"><span class="dot" style="background:var(--orange)"></span>AlleGrowth</a>
+        <div style="display:flex; gap:24px; flex-wrap:wrap;">
+          <a href="#cennik">Pakiety</a>
+          <a href="#proces">Jak działamy</a>
+          <a href="#faq">FAQ</a>
+          <a href="mailto:adam.kubiak@fitbymed.com">Kontakt</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        © <span id="year"></span> AlleGrowth — profesjonalna obsługa Allegro Ads. Wszelkie prawa zastrzeżone.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // mobile menu
+    document.getElementById('burger').addEventListener('click', function () {
+      document.getElementById('navLinks').classList.toggle('show');
+    });
+    document.querySelectorAll('#navLinks a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        document.getElementById('navLinks').classList.remove('show');
+      });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(function (q) {
+      q.addEventListener('click', function () {
+        this.parentElement.classList.toggle('open');
+      });
+    });
+
+    // preset plan in form
+    function presetPlan(name) {
+      var sel = document.getElementById('plan');
+      for (var i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === name || sel.options[i].text === name) { sel.selectedIndex = i; }
+      }
+    }
+
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // form: try AJAX submit (FormSubmit), fallback to normal submit
+    var form = document.getElementById('leadForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = new FormData(form);
+      fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
+        .then(function (r) {
+          form.style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+        })
+        .catch(function () {
+          form.submit();
+        });
+    });
+  </script>
+</body>
+</html>
