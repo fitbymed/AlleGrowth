@@ -3,208 +3,313 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AlleGrowth — Allegro ADS, który realnie sprzedaje</title>
+  <title>AlleGrowth — Allegro Ads, który realnie sprzedaje</title>
   <meta name="description" content="Profesjonalne prowadzenie kampanii Allegro Ads. Trzy pakiety: od prowadzenia reklam po pełną optymalizację aukcji, tytułów i konwersji." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --orange: #ff5a00;
-      --orange-dark: #e54f00;
-      --ink: #0f1115;
-      --ink-soft: #2a2f3a;
-      --muted: #6b7280;
-      --bg: #ffffff;
-      --bg-soft: #f7f8fa;
-      --line: #e7e9ee;
-      --green: #16a34a;
-      --shadow: 0 10px 40px rgba(15, 17, 21, 0.08);
-      --radius: 18px;
+      --orange: #ff6a13;
+      --orange-2: #ff9d4d;
+      --glow: rgba(255, 106, 19, .55);
+      --bg: #0a0b0f;
+      --bg-2: #101218;
+      --panel: #14161d;
+      --panel-2: #181b23;
+      --line: rgba(255, 255, 255, .08);
+      --line-2: rgba(255, 255, 255, .14);
+      --txt: #f4f5f7;
+      --muted: #9aa0ad;
+      --muted-2: #6c7280;
+      --green: #34d27b;
+      --radius: 20px;
+      --maxw: 1180px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--ink);
+      font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--txt);
       background: var(--bg);
       line-height: 1.6;
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
-    .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    h1, h2, h3, .display { font-family: 'Space Grotesk', sans-serif; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* animated aurora background */
+    .aurora {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .aurora span {
+      position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5;
+      animation: float 18s ease-in-out infinite;
+    }
+    .aurora .a1 { width: 540px; height: 540px; background: #ff6a13; top: -160px; left: -120px; opacity: .28; }
+    .aurora .a2 { width: 460px; height: 460px; background: #ff3d81; top: 30%; right: -160px; opacity: .18; animation-delay: -6s; }
+    .aurora .a3 { width: 600px; height: 600px; background: #2b6bff; bottom: -220px; left: 20%; opacity: .16; animation-delay: -11s; }
+    @keyframes float {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(40px,-30px) scale(1.08); }
+      66% { transform: translate(-30px,30px) scale(.95); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .aurora span { animation: none; }
+      [data-reveal] { opacity: 1 !important; transform: none !important; }
+    }
+
+    /* reveal on scroll */
+    [data-reveal] {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+    }
+    [data-reveal].in { opacity: 1; transform: none; }
+
+    /* buttons */
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--orange); color: #fff; font-weight: 700;
+      position: relative; display: inline-flex; align-items: center; gap: 9px;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;
+      color: #160a02; background: linear-gradient(135deg, var(--orange-2), var(--orange));
       padding: 14px 28px; border-radius: 999px; border: none; cursor: pointer;
-      font-size: 16px; transition: transform .15s ease, background .15s ease;
+      box-shadow: 0 8px 30px var(--glow); transition: transform .2s, box-shadow .2s;
     }
-    .btn:hover { background: var(--orange-dark); transform: translateY(-2px); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px var(--glow); }
     .btn-ghost {
-      background: transparent; color: var(--ink); border: 1.5px solid var(--line);
+      color: var(--txt); background: rgba(255,255,255,.04);
+      border: 1px solid var(--line-2); box-shadow: none; backdrop-filter: blur(8px);
     }
-    .btn-ghost:hover { background: var(--bg-soft); border-color: var(--ink); }
+    .btn-ghost:hover { background: rgba(255,255,255,.09); transform: translateY(-2px); box-shadow: none; }
 
-    /* HEADER */
+    /* header */
     header {
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 50; transition: background .3s, border-color .3s;
+      border-bottom: 1px solid transparent;
     }
-    .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-    .logo { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 22px; letter-spacing: -.5px; }
-    .logo .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--orange); display: inline-block; }
-    .logo span { color: var(--orange); }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a { font-weight: 500; color: var(--ink-soft); font-size: 15px; }
-    .nav-links a:hover { color: var(--orange); }
+    header.scrolled { background: rgba(10,11,15,.72); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 76px; position: relative; z-index: 2; }
+    .logo { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk'; font-weight: 700; font-size: 23px; letter-spacing: -.5px; }
+    .logo .mark {
+      width: 30px; height: 30px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--orange-2), var(--orange));
+      box-shadow: 0 0 18px var(--glow); display: grid; place-items: center;
+      font-size: 16px; color: #160a02; font-weight: 800;
+    }
+    .logo b { color: var(--orange); font-weight: 700; }
+    .nav-links { display: flex; gap: 30px; align-items: center; }
+    .nav-links a { font-weight: 500; color: var(--muted); font-size: 15px; transition: color .2s; }
+    .nav-links a:hover { color: var(--txt); }
     .nav-cta { display: flex; gap: 12px; align-items: center; }
-    .burger { display: none; background: none; border: none; cursor: pointer; font-size: 26px; }
+    .burger { display: none; background: none; border: none; cursor: pointer; font-size: 26px; color: var(--txt); }
 
-    /* HERO */
-    .hero { padding: 90px 0 70px; background: radial-gradient(120% 120% at 80% 0%, #fff4ec 0%, #ffffff 55%); }
-    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px; align-items: center; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #fff; border: 1px solid var(--line); color: var(--ink-soft);
-      padding: 7px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; margin-bottom: 24px;
+    /* hero */
+    .hero { position: relative; z-index: 1; padding: 80px 0 90px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600;
+      color: var(--muted); background: rgba(255,255,255,.04); border: 1px solid var(--line);
+      padding: 8px 16px; border-radius: 999px; margin-bottom: 26px; backdrop-filter: blur(8px);
     }
-    .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
-    h1 { font-size: 56px; line-height: 1.05; letter-spacing: -1.5px; font-weight: 900; }
-    h1 .hl { color: var(--orange); }
-    .hero p.lead { font-size: 20px; color: var(--muted); margin: 24px 0 32px; max-width: 540px; }
+    .pill .live { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(52,210,123,.6); animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(52,210,123,.5);} 70% { box-shadow: 0 0 0 10px rgba(52,210,123,0);} 100% { box-shadow: 0 0 0 0 rgba(52,210,123,0);} }
+    h1 { font-size: 60px; line-height: 1.04; letter-spacing: -2px; font-weight: 700; }
+    h1 .grad {
+      background: linear-gradient(135deg, var(--orange-2), var(--orange) 60%, #ff3d81);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p.lead { font-size: 19px; color: var(--muted); margin: 24px 0 34px; max-width: 540px; }
     .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
-    .hero-stats { display: flex; gap: 36px; margin-top: 44px; }
-    .stat strong { display: block; font-size: 32px; font-weight: 900; letter-spacing: -1px; }
-    .stat span { font-size: 14px; color: var(--muted); }
+    .hero-stats { display: flex; gap: 40px; margin-top: 48px; }
+    .stat .num { font-family: 'Space Grotesk'; font-size: 34px; font-weight: 700; letter-spacing: -1px; background: linear-gradient(135deg,#fff,#b9bdc7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat span { font-size: 13.5px; color: var(--muted-2); }
 
-    .hero-card {
-      background: #fff; border: 1px solid var(--line); border-radius: 24px;
-      box-shadow: var(--shadow); padding: 28px;
+    /* hero glass card with animated chart */
+    .glass {
+      position: relative; background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid var(--line-2); border-radius: 24px; padding: 30px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.5); backdrop-filter: blur(14px);
+      animation: bob 7s ease-in-out infinite;
     }
-    .hero-card h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 18px; }
-    .chart { display: flex; align-items: flex-end; gap: 12px; height: 150px; }
-    .bar { flex: 1; background: linear-gradient(180deg, #ffd0b3, var(--orange)); border-radius: 8px 8px 0 0; position: relative; }
-    .bar span { position: absolute; top: -22px; left: 0; right: 0; text-align: center; font-size: 12px; font-weight: 700; color: var(--ink); }
-    .chart-labels { display: flex; gap: 12px; margin-top: 10px; }
-    .chart-labels div { flex: 1; text-align: center; font-size: 12px; color: var(--muted); }
-    .hero-card .row { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
-    .hero-card .row b { color: var(--green); }
+    @keyframes bob { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-10px);} }
+    .glass::before {
+      content:""; position:absolute; inset:0; border-radius:24px; padding:1px;
+      background: linear-gradient(135deg, var(--orange), transparent 40%, transparent 60%, #ff3d81);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; opacity:.6;
+    }
+    .glass h4 { font-family:'Space Grotesk'; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 22px; }
+    .chart { display: flex; align-items: flex-end; gap: 14px; height: 160px; }
+    .bar { flex: 1; border-radius: 8px 8px 3px 3px; position: relative; height: 0;
+      background: linear-gradient(180deg, var(--orange-2), var(--orange));
+      box-shadow: 0 0 22px var(--glow); transition: height 1.1s cubic-bezier(.2,.8,.2,1); }
+    .bar span { position: absolute; top: -24px; left: 0; right: 0; text-align: center; font-size: 12px; font-weight: 700; font-family:'Space Grotesk'; color: var(--txt); opacity: 0; transition: opacity .6s .6s; }
+    .glass.in .bar span { opacity: 1; }
+    .chart-labels { display: flex; gap: 14px; margin-top: 10px; }
+    .chart-labels div { flex: 1; text-align: center; font-size: 12px; color: var(--muted-2); }
+    .glass .row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+    .glass .row b { color: var(--green); font-family:'Space Grotesk'; }
 
-    /* SECTION GENERIC */
-    section.block { padding: 80px 0; }
-    .section-head { text-align: center; max-width: 680px; margin: 0 auto 52px; }
-    .eyebrow { color: var(--orange); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 13px; }
-    h2 { font-size: 40px; letter-spacing: -1px; font-weight: 900; margin: 10px 0 14px; }
+    /* marquee trust strip */
+    .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 20px 0; position: relative; z-index: 1; background: rgba(255,255,255,.015); }
+    .marquee { display: flex; gap: 56px; white-space: nowrap; animation: scrollx 26s linear infinite; width: max-content; }
+    .strip:hover .marquee { animation-play-state: paused; }
+    .marquee span { font-family:'Space Grotesk'; font-weight: 600; color: var(--muted-2); font-size: 15px; display:flex; align-items:center; gap:10px; }
+    .marquee span::before { content:"◆"; color: var(--orange); font-size: 10px; }
+    @keyframes scrollx { to { transform: translateX(-50%); } }
+
+    /* sections */
+    section.block { position: relative; z-index: 1; padding: 100px 0; }
+    .section-head { text-align: center; max-width: 680px; margin: 0 auto 60px; }
+    .eyebrow { font-family:'Space Grotesk'; color: var(--orange); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 12.5px; }
+    h2 { font-size: 44px; letter-spacing: -1.5px; font-weight: 700; margin: 12px 0 14px; }
     .section-head p { color: var(--muted); font-size: 18px; }
 
-    /* PROBLEMS / FEATURES */
+    /* features */
     .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .feature { background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
-    .feature .ico { width: 48px; height: 48px; border-radius: 12px; background: #fff; border: 1px solid var(--line); display: grid; place-items: center; font-size: 24px; margin-bottom: 16px; }
-    .feature h3 { font-size: 19px; margin-bottom: 8px; }
+    .feature {
+      position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 30px; overflow: hidden; transition: transform .3s, border-color .3s;
+    }
+    .feature::after { content:""; position:absolute; top:-40%; right:-40%; width:200px; height:200px; border-radius:50%; background: var(--orange); filter: blur(70px); opacity:0; transition: opacity .35s; }
+    .feature:hover { transform: translateY(-6px); border-color: var(--line-2); }
+    .feature:hover::after { opacity:.16; }
+    .feature .ico { width: 54px; height: 54px; border-radius: 14px; background: rgba(255,106,19,.12); border: 1px solid rgba(255,106,19,.25); display: grid; place-items: center; font-size: 26px; margin-bottom: 18px; }
+    .feature h3 { font-size: 20px; margin-bottom: 9px; letter-spacing: -.3px; }
     .feature p { color: var(--muted); font-size: 15px; }
 
-    /* PRICING */
-    #cennik { background: var(--bg-soft); }
-    .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+    /* pricing */
+    .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
     .plan {
-      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-      padding: 34px 30px; display: flex; flex-direction: column; position: relative;
-      transition: transform .2s ease, box-shadow .2s ease;
+      position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 36px 30px; display: flex; flex-direction: column;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
     }
-    .plan:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
-    .plan.featured { border: 2px solid var(--orange); box-shadow: 0 20px 50px rgba(255,90,0,.15); }
-    .plan .tag { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--orange); color: #fff; font-size: 12px; font-weight: 800; padding: 6px 16px; border-radius: 999px; text-transform: uppercase; letter-spacing: .5px; }
-    .plan-name { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); }
-    .plan-desc { color: var(--muted); font-size: 14px; margin: 6px 0 18px; min-height: 40px; }
-    .price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
-    .price .amount { font-size: 48px; font-weight: 900; letter-spacing: -2px; }
-    .price .per { color: var(--muted); font-weight: 600; font-size: 15px; }
-    .price-note { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .plan:hover { transform: translateY(-8px); border-color: var(--line-2); box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+    .plan.featured {
+      background: linear-gradient(180deg, rgba(255,106,19,.10), var(--panel) 45%);
+      border: 1px solid rgba(255,106,19,.4); box-shadow: 0 0 0 1px rgba(255,106,19,.15), 0 30px 70px rgba(255,106,19,.10);
+    }
+    .plan.featured::before {
+      content:""; position:absolute; inset:-1px; border-radius:var(--radius); padding:1px; pointer-events:none;
+      background: linear-gradient(135deg, var(--orange), transparent 50%, #ff3d81);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; opacity:.7;
+    }
+    .plan .tag {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--orange-2), var(--orange)); color: #160a02;
+      font-family:'Space Grotesk'; font-size: 11.5px; font-weight: 700; padding: 6px 16px;
+      border-radius: 999px; text-transform: uppercase; letter-spacing: .8px; box-shadow: 0 6px 20px var(--glow); white-space: nowrap;
+    }
+    .plan-name { font-family:'Space Grotesk'; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange); }
+    .plan-desc { color: var(--muted); font-size: 14px; margin: 8px 0 20px; min-height: 42px; }
+    .price { display: flex; align-items: baseline; gap: 7px; margin-bottom: 5px; }
+    .price .amount { font-family:'Space Grotesk'; font-size: 52px; font-weight: 700; letter-spacing: -2px; }
+    .price .cur { font-family:'Space Grotesk'; font-size: 22px; font-weight: 600; color: var(--muted); }
+    .price .per { color: var(--muted-2); font-weight: 500; font-size: 15px; }
+    .price-note { font-size: 12.5px; color: var(--muted-2); margin-bottom: 26px; }
     .plan ul { list-style: none; margin: 0 0 28px; flex: 1; }
-    .plan li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; font-size: 15px; border-bottom: 1px dashed var(--line); }
+    .plan li { display: flex; gap: 11px; align-items: flex-start; padding: 10px 0; font-size: 14.5px; border-bottom: 1px solid var(--line); color: var(--txt); }
     .plan li:last-child { border-bottom: none; }
-    .plan li .check { color: var(--green); font-weight: 900; flex-shrink: 0; }
-    .plan li.muted { color: #b4b9c2; }
-    .plan li.muted .check { color: #d6d9df; }
+    .plan li .check { color: var(--green); flex-shrink: 0; font-weight: 800; }
+    .plan li.muted { color: var(--muted-2); }
+    .plan li.muted .check { color: var(--muted-2); opacity: .5; }
+    .plan li b { color: var(--orange-2); font-weight: 600; }
     .plan .btn { width: 100%; justify-content: center; margin-top: auto; }
-    .plan.featured .btn { box-shadow: 0 8px 24px rgba(255,90,0,.3); }
+    .vat-note { text-align: center; color: var(--muted-2); font-size: 14px; margin-top: 32px; }
 
-    /* COMPARISON NOTE */
-    .vat-note { text-align: center; color: var(--muted); font-size: 14px; margin-top: 28px; }
-
-    /* PROCESS */
-    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
-    .step { text-align: center; }
-    .step .num { width: 54px; height: 54px; border-radius: 50%; background: var(--orange); color: #fff; font-weight: 900; font-size: 22px; display: grid; place-items: center; margin: 0 auto 16px; }
-    .step h3 { font-size: 18px; margin-bottom: 6px; }
+    /* process timeline */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; position: relative; }
+    .steps::before { content:""; position:absolute; top:27px; left:8%; right:8%; height:1px; background: linear-gradient(90deg, transparent, var(--line-2), transparent); }
+    .step { text-align: center; position: relative; }
+    .step .num {
+      width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 18px;
+      background: var(--panel-2); border: 1px solid rgba(255,106,19,.35); color: var(--orange);
+      font-family:'Space Grotesk'; font-weight: 700; font-size: 22px; display: grid; place-items: center;
+      box-shadow: 0 0 22px rgba(255,106,19,.18); position: relative; z-index: 1;
+    }
+    .step h3 { font-size: 18px; margin-bottom: 7px; letter-spacing:-.3px; }
     .step p { color: var(--muted); font-size: 14px; }
 
-    /* CTA + FORM */
-    #kontakt { background: linear-gradient(135deg, #14161c 0%, #1f232d 100%); color: #fff; }
+    /* contact */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-    #kontakt h2 { color: #fff; }
-    #kontakt .eyebrow { color: #ff8c4d; }
-    .contact-grid p.lead { color: #c8ccd6; font-size: 18px; margin-bottom: 28px; }
-    .contact-quick { display: flex; flex-direction: column; gap: 14px; }
-    .contact-quick a { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); padding: 16px 20px; border-radius: 14px; font-weight: 600; transition: background .15s; }
-    .contact-quick a:hover { background: rgba(255,255,255,.12); }
-    .contact-quick .ico { width: 42px; height: 42px; border-radius: 10px; background: var(--orange); display: grid; place-items: center; font-size: 20px; }
-    .contact-quick small { display: block; color: #9aa0ad; font-weight: 500; font-size: 13px; }
+    .contact-quick { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+    .contact-quick a { display: flex; align-items: center; gap: 15px; background: var(--panel); border: 1px solid var(--line); padding: 16px 20px; border-radius: 14px; font-weight: 600; transition: transform .2s, border-color .2s; }
+    .contact-quick a:hover { transform: translateX(4px); border-color: var(--line-2); }
+    .contact-quick .ico { width: 44px; height: 44px; border-radius: 11px; background: rgba(255,106,19,.12); border:1px solid rgba(255,106,19,.25); display: grid; place-items: center; font-size: 20px; }
+    .contact-quick small { display: block; color: var(--muted-2); font-weight: 500; font-size: 13px; }
 
-    .form-card { background: #fff; color: var(--ink); border-radius: 20px; padding: 32px; box-shadow: var(--shadow); }
-    .form-card h3 { font-size: 22px; margin-bottom: 6px; }
-    .form-card .sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+    .form-card { background: var(--panel); border: 1px solid var(--line-2); border-radius: 22px; padding: 34px; box-shadow: 0 30px 70px rgba(0,0,0,.45); }
+    .form-card h3 { font-size: 23px; margin-bottom: 6px; letter-spacing:-.5px; }
+    .form-card .sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
     .field { margin-bottom: 16px; }
-    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 7px; color: var(--muted); }
     .field input, .field select, .field textarea {
-      width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 12px;
-      font-family: inherit; font-size: 15px; background: #fff; transition: border .15s;
+      width: 100%; padding: 13px 15px; border: 1px solid var(--line-2); border-radius: 12px;
+      font-family: inherit; font-size: 15px; background: var(--bg-2); color: var(--txt); transition: border .2s, box-shadow .2s;
     }
-    .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--orange); }
+    .field input::placeholder, .field textarea::placeholder { color: var(--muted-2); }
+    .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,106,19,.15); }
+    .field select option { background: var(--bg-2); }
     .form-card .btn { width: 100%; justify-content: center; }
-    .form-note { font-size: 12px; color: var(--muted); margin-top: 14px; text-align: center; }
-    .success { display: none; background: #ecfdf3; border: 1px solid #abefc6; color: #067647; padding: 16px; border-radius: 12px; font-weight: 600; text-align: center; }
+    .form-note { font-size: 12px; color: var(--muted-2); margin-top: 14px; text-align: center; }
+    .success { display: none; background: rgba(52,210,123,.1); border: 1px solid rgba(52,210,123,.3); color: var(--green); padding: 18px; border-radius: 12px; font-weight: 600; text-align: center; }
 
-    /* FAQ */
-    .faq-list { max-width: 760px; margin: 0 auto; }
-    .faq-item { border-bottom: 1px solid var(--line); }
-    .faq-q { width: 100%; text-align: left; background: none; border: none; padding: 22px 0; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; gap: 16px; color: var(--ink); }
-    .faq-q .plus { color: var(--orange); font-weight: 900; transition: transform .2s; }
-    .faq-a { max-height: 0; overflow: hidden; transition: max-height .25s ease; color: var(--muted); font-size: 16px; }
-    .faq-item.open .faq-a { max-height: 240px; padding-bottom: 22px; }
+    /* faq */
+    .faq-list { max-width: 780px; margin: 0 auto; }
+    .faq-item { border: 1px solid var(--line); border-radius: 14px; margin-bottom: 12px; background: var(--panel); overflow: hidden; transition: border-color .2s; }
+    .faq-item.open { border-color: rgba(255,106,19,.35); }
+    .faq-q { width: 100%; text-align: left; background: none; border: none; padding: 22px 24px; font-family:'Space Grotesk'; font-size: 17px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; gap: 16px; color: var(--txt); }
+    .faq-q .plus { color: var(--orange); font-weight: 700; transition: transform .25s; flex-shrink:0; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; color: var(--muted); font-size: 15.5px; padding: 0 24px; }
+    .faq-item.open .faq-a { max-height: 260px; padding-bottom: 22px; }
     .faq-item.open .plus { transform: rotate(45deg); }
 
-    /* FOOTER */
-    footer { background: var(--ink); color: #aab; padding: 50px 0 30px; }
-    .foot-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; align-items: center; }
-    footer .logo { color: #fff; }
-    .foot-grid a { color: #aab; }
-    .foot-grid a:hover { color: #fff; }
-    .foot-bottom { border-top: 1px solid #2a2f3a; margin-top: 30px; padding-top: 22px; font-size: 13px; color: #777e8d; text-align: center; }
+    /* final cta band */
+    .cta-band { position: relative; z-index: 1; }
+    .cta-inner {
+      position: relative; overflow: hidden; border-radius: 28px; padding: 60px 48px; text-align: center;
+      background: linear-gradient(135deg, rgba(255,106,19,.16), rgba(255,61,129,.10));
+      border: 1px solid rgba(255,106,19,.3);
+    }
+    .cta-inner h2 { font-size: 38px; }
+    .cta-inner p { color: var(--muted); font-size: 18px; max-width: 560px; margin: 12px auto 28px; }
 
-    /* RESPONSIVE */
+    /* footer */
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 50px 0 34px; }
+    .foot-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; align-items: center; }
+    .foot-grid .links { display:flex; gap:26px; flex-wrap:wrap; }
+    .foot-grid a { color: var(--muted); transition: color .2s; }
+    .foot-grid a:hover { color: var(--txt); }
+    .foot-bottom { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted-2); text-align: center; }
+
+    /* responsive */
     @media (max-width: 900px) {
-      .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 44px; }
       .features, .pricing { grid-template-columns: 1fr; }
       .steps { grid-template-columns: repeat(2, 1fr); }
-      h1 { font-size: 40px; }
-      h2 { font-size: 30px; }
-      .nav-links { display: none; position: absolute; top: 72px; left: 0; right: 0; background: #fff; flex-direction: column; padding: 20px 24px; border-bottom: 1px solid var(--line); gap: 18px; }
+      .steps::before { display:none; }
+      h1 { font-size: 42px; }
+      h2 { font-size: 32px; }
+      .nav-links { display: none; position: absolute; top: 76px; left: 0; right: 0; background: rgba(10,11,15,.96); backdrop-filter: blur(14px); flex-direction: column; padding: 22px 24px; border-bottom: 1px solid var(--line); gap: 18px; }
       .nav-links.show { display: flex; }
       .burger { display: block; }
       .nav-cta .btn-ghost { display: none; }
-      .hero-stats { gap: 22px; flex-wrap: wrap; }
+      .hero-stats { gap: 26px; flex-wrap: wrap; }
+      .cta-inner { padding: 44px 24px; }
     }
   </style>
 </head>
 <body>
 
+  <div class="aurora"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
   <!-- HEADER -->
-  <header>
+  <header id="hdr">
     <div class="wrap nav">
-      <a href="#" class="logo"><span class="dot"></span>Alle<span>Growth</span></a>
+      <a href="#" class="logo"><span class="mark">A</span>Alle<b>Growth</b></a>
       <nav class="nav-links" id="navLinks">
         <a href="#korzysci">Dlaczego my</a>
         <a href="#cennik">Pakiety</a>
@@ -223,59 +328,64 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap hero-grid">
-      <div>
-        <div class="badge"><span class="dot"></span>Specjaliści Allegro Ads</div>
-        <h1>Allegro Ads, który <span class="hl">realnie sprzedaje</span> — bez przepalania budżetu.</h1>
+      <div data-reveal>
+        <div class="pill"><span class="live"></span>Specjaliści Allegro Ads</div>
+        <h1>Allegro Ads, który <span class="grad">realnie sprzedaje</span> — bez przepalania budżetu.</h1>
         <p class="lead">Prowadzimy i optymalizujemy Twoje kampanie reklamowe na Allegro. Od prowadzenia reklam, przez raporty, po konkretne wskazówki co poprawić w aukcjach, tytułach i konwersji.</p>
         <div class="hero-cta">
           <a href="#cennik" class="btn">Zobacz pakiety →</a>
           <a href="#kontakt" class="btn btn-ghost">Umów konsultację</a>
         </div>
         <div class="hero-stats">
-          <div class="stat"><strong>3 pakiety</strong><span>dopasowane do etapu rozwoju</span></div>
-          <div class="stat"><strong>od 199 zł</strong><span>miesięcznie</span></div>
-          <div class="stat"><strong>0 zł</strong><span>za pierwszą konsultację</span></div>
+          <div class="stat"><div class="num" data-count="3" data-suffix="">0</div><span>pakiety dopasowane do etapu</span></div>
+          <div class="stat"><div class="num" data-count="199" data-prefix="od " data-suffix=" zł">0</div><span>miesięcznie</span></div>
+          <div class="stat"><div class="num" data-count="0" data-suffix=" zł">0</div><span>za pierwszą konsultację</span></div>
         </div>
       </div>
-      <div class="hero-card">
-        <h4>Wzrost sprzedaży z Allegro Ads</h4>
-        <div class="chart">
-          <div class="bar" style="height:45%"><span>+18%</span></div>
-          <div class="bar" style="height:62%"><span>+34%</span></div>
-          <div class="bar" style="height:80%"><span>+58%</span></div>
-          <div class="bar" style="height:100%"><span>+87%</span></div>
-        </div>
-        <div class="chart-labels">
-          <div>Mies. 1</div><div>Mies. 2</div><div>Mies. 3</div><div>Mies. 4</div>
-        </div>
-        <div class="row">
-          <span>Średni wzrost widoczności aukcji</span>
-          <b>↑ znacząco</b>
+      <div data-reveal>
+        <div class="glass" id="heroCard">
+          <h4>Wzrost sprzedaży z Allegro Ads</h4>
+          <div class="chart">
+            <div class="bar" data-h="45%"><span>+18%</span></div>
+            <div class="bar" data-h="62%"><span>+34%</span></div>
+            <div class="bar" data-h="80%"><span>+58%</span></div>
+            <div class="bar" data-h="100%"><span>+87%</span></div>
+          </div>
+          <div class="chart-labels"><div>Mies. 1</div><div>Mies. 2</div><div>Mies. 3</div><div>Mies. 4</div></div>
+          <div class="row"><span>Średni wzrost widoczności aukcji</span><b>↑ znacząco</b></div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- TRUST STRIP -->
+  <div class="strip">
+    <div class="marquee" id="marquee">
+      <span>Allegro Ads</span><span>Optymalizacja aukcji</span><span>Analiza konwersji</span><span>Raporty miesięczne</span><span>Tytuły ofert</span><span>Audyt grafik</span><span>Strategia budżetu</span>
+      <span>Allegro Ads</span><span>Optymalizacja aukcji</span><span>Analiza konwersji</span><span>Raporty miesięczne</span><span>Tytuły ofert</span><span>Audyt grafik</span><span>Strategia budżetu</span>
+    </div>
+  </div>
+
   <!-- KORZYSCI -->
   <section class="block" id="korzysci">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <div class="eyebrow">Dlaczego AlleGrowth</div>
         <h2>Reklama to nie wszystko. Liczy się cała aukcja.</h2>
         <p>Sama kampania Allegro Ads nie wystarczy, jeśli aukcja nie konwertuje. Patrzymy na cały obraz — od reklamy po treść oferty.</p>
       </div>
       <div class="features">
-        <div class="feature">
+        <div class="feature" data-reveal>
           <div class="ico">🎯</div>
           <h3>Kampanie pod sprzedaż</h3>
           <p>Ustawiamy i prowadzimy Allegro Ads tak, by budżet trafiał tam, gdzie realnie generuje zamówienia — nie tylko kliknięcia.</p>
         </div>
-        <div class="feature">
+        <div class="feature" data-reveal style="transition-delay:.1s">
           <div class="ico">📊</div>
           <h3>Przejrzyste raporty</h3>
           <p>Co miesiąc dostajesz czytelny raport: co działało, gdzie poszedł budżet i jaki był efekt — bez ściemy i tabelek bez sensu.</p>
         </div>
-        <div class="feature">
+        <div class="feature" data-reveal style="transition-delay:.2s">
           <div class="ico">🔧</div>
           <h3>Konkretne wskazówki</h3>
           <p>Mówimy wprost co poprawić: tytuł, zdjęcia, opis, cena. Wskazujemy, co na danej aukcji obniża konwersję i jak to naprawić.</p>
@@ -287,18 +397,17 @@
   <!-- CENNIK -->
   <section class="block" id="cennik">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <div class="eyebrow">Pakiety</div>
         <h2>Wybierz pakiet dopasowany do siebie</h2>
         <p>Trzy poziomy współpracy — od samego prowadzenia reklam po pełną optymalizację aukcji i konwersji.</p>
       </div>
       <div class="pricing">
 
-        <!-- START -->
-        <div class="plan">
+        <div class="plan" data-reveal>
           <div class="plan-name">Start</div>
           <div class="plan-desc">Dla tych, którzy chcą po prostu mieć dobrze prowadzone reklamy.</div>
-          <div class="price"><span class="amount">199</span><span class="per">zł / mies.</span></div>
+          <div class="price"><span class="amount">199</span><span class="cur">zł</span><span class="per">/ mies.</span></div>
           <div class="price-note">netto, bez umowy lojalnościowej</div>
           <ul>
             <li><span class="check">✓</span> Prowadzenie kampanii Allegro Ads</li>
@@ -312,12 +421,11 @@
           <a href="#kontakt" class="btn btn-ghost" onclick="presetPlan('Start — 199 zł/mies.')">Wybieram Start</a>
         </div>
 
-        <!-- WZROST (featured) -->
-        <div class="plan featured">
+        <div class="plan featured" data-reveal style="transition-delay:.1s">
           <div class="tag">Najczęściej wybierany</div>
           <div class="plan-name">Wzrost</div>
           <div class="plan-desc">Reklamy + wiedza, co realnie poprawić w Twoich aukcjach.</div>
-          <div class="price"><span class="amount">399</span><span class="per">zł / mies.</span></div>
+          <div class="price"><span class="amount">399</span><span class="cur">zł</span><span class="per">/ mies.</span></div>
           <div class="price-note">netto, bez umowy lojalnościowej</div>
           <ul>
             <li><span class="check">✓</span> Wszystko z pakietu <b>Start</b></li>
@@ -331,11 +439,10 @@
           <a href="#kontakt" class="btn" onclick="presetPlan('Wzrost — 399 zł/mies.')">Wybieram Wzrost</a>
         </div>
 
-        <!-- DOMINACJA -->
-        <div class="plan">
+        <div class="plan" data-reveal style="transition-delay:.2s">
           <div class="plan-name">Dominacja</div>
           <div class="plan-desc">Pełna optymalizacja — reklamy, aukcje i konwersja pod lupą.</div>
-          <div class="price"><span class="amount">599</span><span class="per">zł / mies.</span></div>
+          <div class="price"><span class="amount">599</span><span class="cur">zł</span><span class="per">/ mies.</span></div>
           <div class="price-note">netto, bez umowy lojalnościowej</div>
           <ul>
             <li><span class="check">✓</span> Wszystko z pakietu <b>Wzrost</b></li>
@@ -357,32 +464,16 @@
   <!-- PROCES -->
   <section class="block" id="proces">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <div class="eyebrow">Jak działamy</div>
         <h2>Prosty proces, konkretne efekty</h2>
         <p>Bez zbędnej biurokracji. Zaczynamy od rozmowy, kończymy na wynikach.</p>
       </div>
       <div class="steps">
-        <div class="step">
-          <div class="num">1</div>
-          <h3>Bezpłatna konsultacja</h3>
-          <p>Poznajemy Twój sklep, asortyment i cele sprzedażowe.</p>
-        </div>
-        <div class="step">
-          <div class="num">2</div>
-          <h3>Audyt konta</h3>
-          <p>Sprawdzamy aukcje i dotychczasowe reklamy. Wskazujemy potencjał.</p>
-        </div>
-        <div class="step">
-          <div class="num">3</div>
-          <h3>Wdrożenie</h3>
-          <p>Uruchamiamy i optymalizujemy kampanie zgodnie z wybranym pakietem.</p>
-        </div>
-        <div class="step">
-          <div class="num">4</div>
-          <h3>Raporty i rozwój</h3>
-          <p>Co miesiąc raportujemy efekty i podpowiadamy kolejne kroki.</p>
-        </div>
+        <div class="step" data-reveal><div class="num">1</div><h3>Bezpłatna konsultacja</h3><p>Poznajemy Twój sklep, asortyment i cele sprzedażowe.</p></div>
+        <div class="step" data-reveal style="transition-delay:.1s"><div class="num">2</div><h3>Audyt konta</h3><p>Sprawdzamy aukcje i dotychczasowe reklamy. Wskazujemy potencjał.</p></div>
+        <div class="step" data-reveal style="transition-delay:.2s"><div class="num">3</div><h3>Wdrożenie</h3><p>Uruchamiamy i optymalizujemy kampanie zgodnie z wybranym pakietem.</p></div>
+        <div class="step" data-reveal style="transition-delay:.3s"><div class="num">4</div><h3>Raporty i rozwój</h3><p>Co miesiąc raportujemy efekty i podpowiadamy kolejne kroki.</p></div>
       </div>
     </div>
   </section>
@@ -390,43 +481,31 @@
   <!-- KONTAKT -->
   <section class="block" id="kontakt">
     <div class="wrap contact-grid">
-      <div>
+      <div data-reveal>
         <div class="eyebrow">Kontakt</div>
         <h2>Zacznijmy od bezpłatnej konsultacji</h2>
-        <p class="lead">Zostaw kontakt lub napisz bezpośrednio. Odezwiemy się i wspólnie dobierzemy pakiet, który ma sens dla Twojego sklepu.</p>
+        <p class="lead" style="color:var(--muted)">Zostaw kontakt lub napisz bezpośrednio. Odezwiemy się i wspólnie dobierzemy pakiet, który ma sens dla Twojego sklepu.</p>
         <div class="contact-quick">
           <a href="mailto:adam.kubiak@fitbymed.com?subject=Zapytanie%20Allegro%20Ads%20-%20AlleGrowth">
-            <span class="ico">✉</span>
-            <span>Napisz e-mail<small>adam.kubiak@fitbymed.com</small></span>
+            <span class="ico">✉</span><span>Napisz e-mail<small>adam.kubiak@fitbymed.com</small></span>
           </a>
           <a href="tel:+48000000000">
-            <span class="ico">☎</span>
-            <span>Zadzwoń<small>Uzupełnij swój numer telefonu</small></span>
+            <span class="ico">☎</span><span>Zadzwoń<small>Uzupełnij swój numer telefonu</small></span>
           </a>
         </div>
       </div>
 
-      <div class="form-card">
+      <div class="form-card" data-reveal style="transition-delay:.1s">
         <h3>Zostaw zgłoszenie</h3>
         <p class="sub">Odpowiadamy zwykle tego samego dnia roboczego.</p>
         <form id="leadForm" action="https://formsubmit.co/adam.kubiak@fitbymed.com" method="POST">
           <input type="hidden" name="_subject" value="Nowe zgłoszenie z landing page AlleGrowth" />
           <input type="hidden" name="_template" value="table" />
           <input type="text" name="_honey" style="display:none" />
-          <div class="field">
-            <label for="name">Imię i nazwisko *</label>
-            <input type="text" id="name" name="Imię" required placeholder="Jan Kowalski" />
-          </div>
-          <div class="field">
-            <label for="email">E-mail *</label>
-            <input type="email" id="email" name="E-mail" required placeholder="jan@sklep.pl" />
-          </div>
-          <div class="field">
-            <label for="phone">Telefon</label>
-            <input type="tel" id="phone" name="Telefon" placeholder="+48 600 000 000" />
-          </div>
-          <div class="field">
-            <label for="plan">Interesujący pakiet</label>
+          <div class="field"><label for="name">Imię i nazwisko *</label><input type="text" id="name" name="Imię" required placeholder="Jan Kowalski" /></div>
+          <div class="field"><label for="email">E-mail *</label><input type="email" id="email" name="E-mail" required placeholder="jan@sklep.pl" /></div>
+          <div class="field"><label for="phone">Telefon</label><input type="tel" id="phone" name="Telefon" placeholder="+48 600 000 000" /></div>
+          <div class="field"><label for="plan">Interesujący pakiet</label>
             <select id="plan" name="Pakiet">
               <option>Nie wiem — doradźcie</option>
               <option>Start — 199 zł/mies.</option>
@@ -434,10 +513,7 @@
               <option>Dominacja — 599 zł/mies.</option>
             </select>
           </div>
-          <div class="field">
-            <label for="msg">Wiadomość</label>
-            <textarea id="msg" name="Wiadomość" rows="3" placeholder="Kilka słów o Twoim sklepie i asortymencie..."></textarea>
-          </div>
+          <div class="field"><label for="msg">Wiadomość</label><textarea id="msg" name="Wiadomość" rows="3" placeholder="Kilka słów o Twoim sklepie i asortymencie..."></textarea></div>
           <button type="submit" class="btn">Wyślij zgłoszenie</button>
           <p class="form-note">Wysyłając formularz wyrażasz zgodę na kontakt w sprawie usługi.</p>
         </form>
@@ -449,31 +525,27 @@
   <!-- FAQ -->
   <section class="block" id="faq">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <div class="eyebrow">FAQ</div>
         <h2>Najczęstsze pytania</h2>
       </div>
-      <div class="faq-list">
-        <div class="faq-item">
-          <button class="faq-q">Czy budżet reklamowy Allegro Ads jest wliczony w cenę pakietu? <span class="plus">+</span></button>
-          <div class="faq-a">Nie. Cena pakietu dotyczy obsługi i optymalizacji kampanii. Budżet reklamowy płacisz bezpośrednio Allegro i sam decydujesz o jego wysokości — my pomagamy go efektywnie wykorzystać.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q">Czy podpisuję długą umowę? <span class="plus">+</span></button>
-          <div class="faq-a">Nie ma umów lojalnościowych. Rozliczenie jest miesięczne — współpracujemy tak długo, jak długo widzisz w tym wartość.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q">Czym różni się pakiet Wzrost od Dominacji? <span class="plus">+</span></button>
-          <div class="faq-a">Wzrost daje Ci raporty i wskazówki co poprawić (tytuły, grafiki). Dominacja idzie dalej: dostajesz gotowe propozycje tytułów, sprawdzamy konwersję każdej aukcji i punkt po punkcie wskazujemy, co konkretnie obniża sprzedaż na danej ofercie.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q">Ile trwa, zanim zobaczę efekty? <span class="plus">+</span></button>
-          <div class="faq-a">Pierwsze zmiany w widoczności widać zwykle w ciągu kilku tygodni. Stabilne efekty sprzedażowe budują się przez 2–3 miesiące optymalizacji.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q">Czy pomożecie, jeśli dopiero zaczynam na Allegro? <span class="plus">+</span></button>
-          <div class="faq-a">Tak. Podczas bezpłatnej konsultacji ocenimy Twoją sytuację i doradzimy, od czego zacząć — niezależnie od tego, czy masz 5 czy 500 aukcji.</div>
-        </div>
+      <div class="faq-list" data-reveal>
+        <div class="faq-item"><button class="faq-q">Czy budżet reklamowy Allegro Ads jest wliczony w cenę pakietu? <span class="plus">+</span></button><div class="faq-a">Nie. Cena pakietu dotyczy obsługi i optymalizacji kampanii. Budżet reklamowy płacisz bezpośrednio Allegro i sam decydujesz o jego wysokości — my pomagamy go efektywnie wykorzystać.</div></div>
+        <div class="faq-item"><button class="faq-q">Czy podpisuję długą umowę? <span class="plus">+</span></button><div class="faq-a">Nie ma umów lojalnościowych. Rozliczenie jest miesięczne — współpracujemy tak długo, jak długo widzisz w tym wartość.</div></div>
+        <div class="faq-item"><button class="faq-q">Czym różni się pakiet Wzrost od Dominacji? <span class="plus">+</span></button><div class="faq-a">Wzrost daje Ci raporty i wskazówki co poprawić (tytuły, grafiki). Dominacja idzie dalej: dostajesz gotowe propozycje tytułów, sprawdzamy konwersję każdej aukcji i punkt po punkcie wskazujemy, co konkretnie obniża sprzedaż na danej ofercie.</div></div>
+        <div class="faq-item"><button class="faq-q">Ile trwa, zanim zobaczę efekty? <span class="plus">+</span></button><div class="faq-a">Pierwsze zmiany w widoczności widać zwykle w ciągu kilku tygodni. Stabilne efekty sprzedażowe budują się przez 2–3 miesiące optymalizacji.</div></div>
+        <div class="faq-item"><button class="faq-q">Czy pomożecie, jeśli dopiero zaczynam na Allegro? <span class="plus">+</span></button><div class="faq-a">Tak. Podczas bezpłatnej konsultacji ocenimy Twoją sytuację i doradzimy, od czego zacząć — niezależnie od tego, czy masz 5 czy 500 aukcji.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="block cta-band">
+    <div class="wrap">
+      <div class="cta-inner" data-reveal>
+        <h2>Gotowy, żeby Twoje aukcje zaczęły sprzedawać więcej?</h2>
+        <p>Umów bezpłatną konsultację i wstępny audyt konta. Bez zobowiązań.</p>
+        <a href="#kontakt" class="btn">Umów bezpłatną konsultację →</a>
       </div>
     </div>
   </section>
@@ -482,62 +554,88 @@
   <footer>
     <div class="wrap">
       <div class="foot-grid">
-        <a href="#" class="logo"><span class="dot" style="background:var(--orange)"></span>AlleGrowth</a>
-        <div style="display:flex; gap:24px; flex-wrap:wrap;">
-          <a href="#cennik">Pakiety</a>
-          <a href="#proces">Jak działamy</a>
-          <a href="#faq">FAQ</a>
-          <a href="mailto:adam.kubiak@fitbymed.com">Kontakt</a>
+        <a href="#" class="logo"><span class="mark">A</span>Alle<b>Growth</b></a>
+        <div class="links">
+          <a href="#cennik">Pakiety</a><a href="#proces">Jak działamy</a><a href="#faq">FAQ</a><a href="mailto:adam.kubiak@fitbymed.com">Kontakt</a>
         </div>
       </div>
-      <div class="foot-bottom">
-        © <span id="year"></span> AlleGrowth — profesjonalna obsługa Allegro Ads. Wszelkie prawa zastrzeżone.
-      </div>
+      <div class="foot-bottom">© <span id="year"></span> AlleGrowth — profesjonalna obsługa Allegro Ads. Wszelkie prawa zastrzeżone.</div>
     </div>
   </footer>
 
   <script>
+    // header scroll state
+    var hdr = document.getElementById('hdr');
+    window.addEventListener('scroll', function () {
+      hdr.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
     // mobile menu
     document.getElementById('burger').addEventListener('click', function () {
       document.getElementById('navLinks').classList.toggle('show');
     });
     document.querySelectorAll('#navLinks a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        document.getElementById('navLinks').classList.remove('show');
-      });
+      a.addEventListener('click', function () { document.getElementById('navLinks').classList.remove('show'); });
     });
 
-    // FAQ accordion
+    // FAQ
     document.querySelectorAll('.faq-q').forEach(function (q) {
-      q.addEventListener('click', function () {
-        this.parentElement.classList.toggle('open');
-      });
+      q.addEventListener('click', function () { this.parentElement.classList.toggle('open'); });
     });
 
-    // preset plan in form
+    // preset plan
     function presetPlan(name) {
       var sel = document.getElementById('plan');
       for (var i = 0; i < sel.options.length; i++) {
-        if (sel.options[i].value === name || sel.options[i].text === name) { sel.selectedIndex = i; }
+        if (sel.options[i].value === name || sel.options[i].text === name) sel.selectedIndex = i;
       }
     }
 
-    // year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // form: try AJAX submit (FormSubmit), fallback to normal submit
+    // scroll reveal
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+    }, { threshold: .15 });
+    document.querySelectorAll('[data-reveal]').forEach(function (el) { revealObs.observe(el); });
+
+    // animated chart bars + count-up when hero card visible
+    var card = document.getElementById('heroCard');
+    var cardObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          card.classList.add('in');
+          card.querySelectorAll('.bar').forEach(function (b) { b.style.height = b.getAttribute('data-h'); });
+          document.querySelectorAll('[data-count]').forEach(countUp);
+          cardObs.unobserve(card);
+        }
+      });
+    }, { threshold: .3 });
+    cardObs.observe(card);
+
+    function countUp(el) {
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var pre = el.getAttribute('data-prefix') || '';
+      var suf = el.getAttribute('data-suffix') || '';
+      var dur = 1200, start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var val = Math.round((1 - Math.pow(1 - p, 3)) * target);
+        el.textContent = pre + val + suf;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // form submit
     var form = document.getElementById('leadForm');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var data = new FormData(form);
       fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
-        .then(function (r) {
-          form.style.display = 'none';
-          document.getElementById('formSuccess').style.display = 'block';
-        })
-        .catch(function () {
-          form.submit();
-        });
+        .then(function () { form.style.display = 'none'; document.getElementById('formSuccess').style.display = 'block'; })
+        .catch(function () { form.submit(); });
     });
   </script>
 </body>
