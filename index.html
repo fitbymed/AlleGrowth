@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AlleGrowth — Allegro Ads, który realnie sprzedaje</title>
   <meta name="description" content="Profesjonalne prowadzenie kampanii Allegro Ads. Trzy pakiety: od prowadzenia reklam po pełną optymalizację aukcji, tytułów i konwersji." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <meta name="theme-color" content="#0a0b0f" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -57,8 +60,9 @@
       66% { transform: translate(-30px,30px) scale(.95); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .aurora span { animation: none; }
+      .aurora span, .btn::after, h1 .grad, .glass, .dot-live, .pill .live { animation: none !important; }
       [data-reveal] { opacity: 1 !important; transform: none !important; }
+      .roas-chart { clip-path: none !important; }
     }
 
     /* reveal on scroll */
@@ -70,17 +74,25 @@
 
     /* buttons */
     .btn {
-      position: relative; display: inline-flex; align-items: center; gap: 9px;
+      position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 9px;
       font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;
       color: #160a02; background: linear-gradient(135deg, var(--orange-2), var(--orange));
       padding: 14px 28px; border-radius: 999px; border: none; cursor: pointer;
       box-shadow: 0 8px 30px var(--glow); transition: transform .2s, box-shadow .2s;
     }
+    .btn > * { position: relative; z-index: 1; }
+    .btn::after {
+      content:""; position:absolute; top:0; left:-140%; width:70%; height:100%; z-index:0; pointer-events:none;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.5), transparent);
+      transform: skewX(-20deg); animation: sweep 5s ease-in-out infinite;
+    }
+    @keyframes sweep { 0% { left:-140%; } 45%,100% { left:140%; } }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px var(--glow); }
     .btn-ghost {
       color: var(--txt); background: rgba(255,255,255,.04);
       border: 1px solid var(--line-2); box-shadow: none; backdrop-filter: blur(8px);
     }
+    .btn-ghost::after { display: none; }
     .btn-ghost:hover { background: rgba(255,255,255,.09); transform: translateY(-2px); box-shadow: none; }
 
     /* header */
@@ -90,7 +102,9 @@
     }
     header.scrolled { background: rgba(10,11,15,.72); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
     .nav { display: flex; align-items: center; justify-content: space-between; height: 76px; position: relative; z-index: 2; }
-    .logo { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk'; font-weight: 700; font-size: 23px; letter-spacing: -.5px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk'; font-weight: 700; font-size: 23px; letter-spacing: -1px; }
+    .logo .word { display: inline-flex; }
+    .logo .word b { margin-left: -1px; }
     .logo .mark {
       width: 30px; height: 30px; border-radius: 9px;
       background: linear-gradient(135deg, var(--orange-2), var(--orange));
@@ -116,9 +130,12 @@
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(52,210,123,.5);} 70% { box-shadow: 0 0 0 10px rgba(52,210,123,0);} 100% { box-shadow: 0 0 0 0 rgba(52,210,123,0);} }
     h1 { font-size: 60px; line-height: 1.04; letter-spacing: -2px; font-weight: 700; }
     h1 .grad {
-      background: linear-gradient(135deg, var(--orange-2), var(--orange) 60%, #ff3d81);
+      background: linear-gradient(135deg, var(--orange-2), var(--orange) 45%, #ff3d81 70%, var(--orange-2));
+      background-size: 250% auto;
       -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      animation: shine 6s linear infinite;
     }
+    @keyframes shine { to { background-position: 250% center; } }
     .hero p.lead { font-size: 19px; color: var(--muted); margin: 24px 0 34px; max-width: 540px; }
     .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
     .hero-stats { display: flex; gap: 40px; margin-top: 48px; }
@@ -235,11 +252,10 @@
 
     /* contact */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-    .contact-quick { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
-    .contact-quick a { display: flex; align-items: center; gap: 15px; background: var(--panel); border: 1px solid var(--line); padding: 16px 20px; border-radius: 14px; font-weight: 600; transition: transform .2s, border-color .2s; }
-    .contact-quick a:hover { transform: translateX(4px); border-color: var(--line-2); }
-    .contact-quick .ico { width: 44px; height: 44px; border-radius: 11px; background: rgba(255,106,19,.12); border:1px solid rgba(255,106,19,.25); display: grid; place-items: center; font-size: 20px; }
-    .contact-quick small { display: block; color: var(--muted-2); font-weight: 500; font-size: 13px; }
+    .contact-points { list-style: none; margin: 28px 0 0; padding: 0; }
+    .contact-points li { display: flex; align-items: center; gap: 13px; padding: 11px 0; font-size: 15.5px; color: var(--txt); border-bottom: 1px solid var(--line); }
+    .contact-points li:last-child { border-bottom: none; }
+    .cp-ico { width: 26px; height: 26px; flex-shrink: 0; border-radius: 8px; background: rgba(52,210,123,.14); border: 1px solid rgba(52,210,123,.3); color: var(--green); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
 
     .form-card { background: var(--panel); border: 1px solid var(--line-2); border-radius: 22px; padding: 34px; box-shadow: 0 30px 70px rgba(0,0,0,.45); }
     .form-card h3 { font-size: 23px; margin-bottom: 6px; letter-spacing:-.5px; }
@@ -289,10 +305,35 @@
     .foot-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted-2); text-align: center; }
     @media (max-width: 700px) { .foot-top { grid-template-columns: 1fr 1fr; gap: 28px; } }
 
+    /* results dashboard (ROAS) */
+    .dashboard { position: relative; max-width: 960px; margin: 0 auto; background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border: 1px solid var(--line-2); border-radius: 24px; padding: 28px; box-shadow: 0 30px 80px rgba(0,0,0,.5); backdrop-filter: blur(14px); overflow: hidden; }
+    .dashboard::before { content:""; position:absolute; inset:0; border-radius:24px; padding:1px; background:linear-gradient(135deg,var(--orange),transparent 45%,transparent 60%,#ff3d81); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; opacity:.5; pointer-events:none; }
+    .dash-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
+    .dash-title { font-family:'Space Grotesk'; font-size:14px; color:var(--muted); display:flex; align-items:center; gap:10px; }
+    .dot-live { width:9px; height:9px; border-radius:50%; background:var(--green); box-shadow:0 0 0 0 rgba(52,210,123,.6); animation:pulse 2s infinite; }
+    .dash-week { font-family:'Space Grotesk'; font-size:12.5px; font-weight:700; color:#160a02; background:linear-gradient(135deg,var(--orange-2),var(--orange)); padding:7px 15px; border-radius:999px; box-shadow:0 6px 18px var(--glow); display:inline-flex; align-items:center; gap:8px; }
+    .dash-week::before { content:"↻"; font-weight:800; display:inline-block; animation:spin 4s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:22px; }
+    .kpi { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; transition:transform .3s, border-color .3s; }
+    .kpi:hover { transform:translateY(-4px); border-color:var(--line-2); }
+    .kpi-label { font-size:12px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.8px; font-family:'Space Grotesk'; margin-bottom:8px; }
+    .kpi-val { font-family:'Space Grotesk'; font-size:40px; font-weight:700; letter-spacing:-1.5px; line-height:1; background:linear-gradient(135deg,#fff,#c7ccd6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+    .kpi-trend { font-size:12.5px; margin-top:9px; color:var(--green); font-weight:600; display:flex; align-items:center; gap:5px; }
+    .dash-chart { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; }
+    .dash-chart-head { display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--muted); margin-bottom:12px; font-family:'Space Grotesk'; }
+    .dash-legend { color:var(--orange); display:flex; align-items:center; gap:7px; }
+    .dash-legend .dot-live { background:var(--orange); }
+    .roas-chart { display:block; width:100%; height:210px; clip-path:inset(0 100% 0 0); transition:clip-path 2.1s cubic-bezier(.4,0,.2,1); }
+    .roas-chart.play { clip-path:inset(0 0 0 0); }
+    .dash-x { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:var(--muted-2); font-family:'Space Grotesk'; }
+
     /* responsive */
     @media (max-width: 900px) {
       .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 44px; }
       .features, .pricing { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: 1fr; }
+      .kpi-val { font-size: 34px; }
       .steps { grid-template-columns: repeat(2, 1fr); }
       .steps::before { display:none; }
       h1 { font-size: 42px; }
@@ -313,8 +354,9 @@
   <!-- HEADER -->
   <header id="hdr">
     <div class="wrap nav">
-      <a href="#" class="logo"><span class="mark">A</span>Alle<b>Growth</b></a>
+      <a href="#" class="logo"><span class="mark">A</span><span class="word">Alle<b>Growth</b></span></a>
       <nav class="nav-links" id="navLinks">
+        <a href="#wyniki">Efekty</a>
         <a href="#korzysci">Dlaczego my</a>
         <a href="#cennik">Pakiety</a>
         <a href="#proces">Jak działamy</a>
@@ -365,10 +407,70 @@
   <!-- TRUST STRIP -->
   <div class="strip">
     <div class="marquee" id="marquee">
-      <span>Allegro Ads</span><span>Optymalizacja aukcji</span><span>Analiza konwersji</span><span>Raporty miesięczne</span><span>Tytuły ofert</span><span>Audyt grafik</span><span>Strategia budżetu</span>
-      <span>Allegro Ads</span><span>Optymalizacja aukcji</span><span>Analiza konwersji</span><span>Raporty miesięczne</span><span>Tytuły ofert</span><span>Audyt grafik</span><span>Strategia budżetu</span>
+      <span>Allegro Ads</span><span>Optymalizacja aukcji</span><span>Analiza konwersji</span><span>Raport co tydzień</span><span>Tytuły ofert</span><span>Audyt grafik</span><span>Strategia budżetu</span>
+      <span>Allegro Ads</span><span>Optymalizacja aukcji</span><span>Analiza konwersji</span><span>Raport co tydzień</span><span>Tytuły ofert</span><span>Audyt grafik</span><span>Strategia budżetu</span>
     </div>
   </div>
+
+  <!-- WYNIKI / ROAS -->
+  <section class="block" id="wyniki">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <div class="eyebrow">Efekty, nie obietnice</div>
+        <h2>Widzisz, jak Twoje zyski rosną</h2>
+        <p>Co tydzień dostajesz raport z realnymi liczbami — ROAS, przychód z reklam i koszt zamówienia w jednym miejscu. Bez domysłów.</p>
+      </div>
+      <div class="dashboard" id="roasCard" data-reveal>
+        <div class="dash-head">
+          <div class="dash-title"><span class="dot-live"></span> Panel wyników — podgląd na żywo</div>
+          <div class="dash-week">Raport co tydzień</div>
+        </div>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi-label">ROAS</div>
+            <div class="kpi-val" data-count="6.8" data-decimals="1" data-suffix="×">0</div>
+            <div class="kpi-trend">▲ z 3,1× na starcie</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Przychód z reklam</div>
+            <div class="kpi-val" data-count="142" data-prefix="+" data-suffix="%">0</div>
+            <div class="kpi-trend">▲ tydzień do tygodnia</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Koszt / zamówienie</div>
+            <div class="kpi-val" data-count="38" data-prefix="−" data-suffix="%">0</div>
+            <div class="kpi-trend">▼ niższy koszt reklamy</div>
+          </div>
+        </div>
+        <div class="dash-chart">
+          <div class="dash-chart-head"><span>Zysk z Allegro Ads w czasie</span><span class="dash-legend"><span class="dot-live"></span>ROAS rośnie</span></div>
+          <svg class="roas-chart" viewBox="0 0 640 210" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wykres rosnącego zysku">
+            <defs>
+              <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ff6a13" stop-opacity="0.45"/>
+                <stop offset="1" stop-color="#ff6a13" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#ff9d4d"/>
+                <stop offset="1" stop-color="#ff3d81"/>
+              </linearGradient>
+            </defs>
+            <line x1="10" y1="60" x2="630" y2="60" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <line x1="10" y1="120" x2="630" y2="120" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <line x1="10" y1="180" x2="630" y2="180" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <path d="M10,182 L85,170 L160,176 L235,148 L310,150 L385,116 L460,92 L535,64 L620,38 L620,205 L10,205 Z" fill="url(#areaFill)"/>
+            <path d="M10,182 L85,170 L160,176 L235,148 L310,150 L385,116 L460,92 L535,64 L620,38" fill="none" stroke="url(#lineGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="620" cy="38" r="5.5" fill="#fff"/>
+            <circle cx="620" cy="38" r="5.5" fill="none" stroke="#ff6a13" stroke-width="2">
+              <animate attributeName="r" values="5.5;15;5.5" dur="2.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;0;1" dur="2.2s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+          <div class="dash-x"><span>Tydz. 1</span><span>Tydz. 3</span><span>Tydz. 5</span><span>Tydz. 7</span><span>Teraz</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- KORZYSCI -->
   <section class="block" id="korzysci">
@@ -386,8 +488,8 @@
         </div>
         <div class="feature" data-reveal style="transition-delay:.1s">
           <div class="ico">📊</div>
-          <h3>Przejrzyste raporty</h3>
-          <p>Co miesiąc dostajesz czytelny raport: co działało, gdzie poszedł budżet i jaki był efekt — bez ściemy i tabelek bez sensu.</p>
+          <h3>Raport co tydzień</h3>
+          <p>Co tydzień dostajesz czytelny raport: co działało, gdzie poszedł budżet i jaki był efekt — bez ściemy i tabelek bez sensu.</p>
         </div>
         <div class="feature" data-reveal style="transition-delay:.2s">
           <div class="ico">🔧</div>
@@ -418,7 +520,7 @@
             <li><span class="check">✓</span> Konfiguracja i uruchomienie reklam</li>
             <li><span class="check">✓</span> Bieżąca optymalizacja stawek</li>
             <li><span class="check">✓</span> Kontrola wydatków budżetu</li>
-            <li class="muted"><span class="check">✓</span> Miesięczne raporty</li>
+            <li class="muted"><span class="check">✓</span> Cotygodniowe raporty</li>
             <li class="muted"><span class="check">✓</span> Wskazówki co poprawić</li>
             <li class="muted"><span class="check">✓</span> Sugestie tytułów i analiza konwersji</li>
           </ul>
@@ -433,7 +535,7 @@
           <div class="price-note">netto, bez umowy lojalnościowej</div>
           <ul>
             <li><span class="check">✓</span> Wszystko z pakietu <b>Start</b></li>
-            <li><span class="check">✓</span> Szczegółowe miesięczne raporty</li>
+            <li><span class="check">✓</span> Szczegółowe raporty co tydzień</li>
             <li><span class="check">✓</span> Wskazówki co poprawić na aukcjach</li>
             <li><span class="check">✓</span> Rekomendacje dot. tytułów ofert</li>
             <li><span class="check">✓</span> Sugestie poprawy grafik / zdjęć</li>
@@ -477,7 +579,7 @@
         <div class="step" data-reveal><div class="num">1</div><h3>Bezpłatna konsultacja</h3><p>Poznajemy Twój sklep, asortyment i cele sprzedażowe.</p></div>
         <div class="step" data-reveal style="transition-delay:.1s"><div class="num">2</div><h3>Audyt konta</h3><p>Sprawdzamy aukcje i dotychczasowe reklamy. Wskazujemy potencjał.</p></div>
         <div class="step" data-reveal style="transition-delay:.2s"><div class="num">3</div><h3>Wdrożenie</h3><p>Uruchamiamy i optymalizujemy kampanie zgodnie z wybranym pakietem.</p></div>
-        <div class="step" data-reveal style="transition-delay:.3s"><div class="num">4</div><h3>Raporty i rozwój</h3><p>Co miesiąc raportujemy efekty i podpowiadamy kolejne kroki.</p></div>
+        <div class="step" data-reveal style="transition-delay:.3s"><div class="num">4</div><h3>Raporty i rozwój</h3><p>Co tydzień raportujemy efekty i podpowiadamy kolejne kroki.</p></div>
       </div>
     </div>
   </section>
@@ -488,15 +590,13 @@
       <div data-reveal>
         <div class="eyebrow">Kontakt</div>
         <h2>Zacznijmy od bezpłatnej konsultacji</h2>
-        <p class="lead" style="color:var(--muted)">Zostaw kontakt lub napisz bezpośrednio. Odezwiemy się i wspólnie dobierzemy pakiet, który ma sens dla Twojego sklepu.</p>
-        <div class="contact-quick">
-          <a href="mailto:adam.kubiak@fitbymed.com?subject=Zapytanie%20Allegro%20Ads%20-%20AlleGrowth">
-            <span class="ico">✉</span><span>Napisz e-mail<small>adam.kubiak@fitbymed.com</small></span>
-          </a>
-          <a href="tel:+48000000000">
-            <span class="ico">☎</span><span>Zadzwoń<small>Uzupełnij swój numer telefonu</small></span>
-          </a>
-        </div>
+        <p class="lead" style="color:var(--muted)">Zostaw zgłoszenie w formularzu — odezwiemy się i wspólnie dobierzemy pakiet, który ma sens dla Twojego sklepu.</p>
+        <ul class="contact-points">
+          <li><span class="cp-ico">✓</span> Odpowiedź zwykle tego samego dnia roboczego</li>
+          <li><span class="cp-ico">✓</span> Bezpłatna konsultacja i wstępny audyt konta</li>
+          <li><span class="cp-ico">✓</span> Raport z efektów co tydzień</li>
+          <li><span class="cp-ico">✓</span> Bez umów lojalnościowych</li>
+        </ul>
       </div>
 
       <div class="form-card" data-reveal style="transition-delay:.1s">
@@ -559,7 +659,7 @@
     <div class="wrap">
       <div class="foot-top">
         <div class="foot-brand">
-          <a href="#" class="logo"><span class="mark">A</span>Alle<b>Growth</b></a>
+          <a href="#" class="logo"><span class="mark">A</span><span class="word">Alle<b>Growth</b></span></a>
           <address class="foot-company">
             <b>ADAM KUBIAK CONSULTING</b><br>
             ul. Adama Mickiewicza 11/10<br>
@@ -632,7 +732,7 @@
         if (e.isIntersecting) {
           card.classList.add('in');
           card.querySelectorAll('.bar').forEach(function (b) { b.style.height = b.getAttribute('data-h'); });
-          document.querySelectorAll('[data-count]').forEach(countUp);
+          document.querySelectorAll('.hero-stats [data-count]').forEach(countUp);
           cardObs.unobserve(card);
         }
       });
@@ -640,18 +740,36 @@
     cardObs.observe(card);
 
     function countUp(el) {
-      var target = parseInt(el.getAttribute('data-count'), 10);
+      var target = parseFloat(el.getAttribute('data-count'));
+      var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
       var pre = el.getAttribute('data-prefix') || '';
       var suf = el.getAttribute('data-suffix') || '';
-      var dur = 1200, start = null;
+      var dur = 1400, start = null;
+      function fmt(v) { return v.toFixed(dec).replace('.', ','); }
       function step(ts) {
         if (!start) start = ts;
         var p = Math.min((ts - start) / dur, 1);
-        var val = Math.round((1 - Math.pow(1 - p, 3)) * target);
-        el.textContent = pre + val + suf;
+        var val = (1 - Math.pow(1 - p, 3)) * target;
+        el.textContent = pre + fmt(val) + suf;
         if (p < 1) requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
+    }
+
+    // results dashboard: play chart + count KPIs when in view
+    var roas = document.getElementById('roasCard');
+    if (roas) {
+      var roasObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            var c = roas.querySelector('.roas-chart');
+            if (c) c.classList.add('play');
+            roas.querySelectorAll('[data-count]').forEach(countUp);
+            roasObs.unobserve(roas);
+          }
+        });
+      }, { threshold: .3 });
+      roasObs.observe(roas);
     }
 
     // form submit
